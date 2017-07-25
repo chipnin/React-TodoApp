@@ -5,13 +5,17 @@
   "author": "NgocTV",
   "license": "MIT",
   "dependencies": {
+    "clean-webpack-plugin": "^0.1.16",
+    "copy-webpack-plugin": "^4.0.1",
     "extract-text-webpack-plugin": "^3.0.0",
+    "file-loader": "^0.11.2",
     "react": "^15.6.1",
     "react-dom": "^15.6.1",
     "webpack": "^3.3.0"
   },
   "scripts": {
-    "start": "webpack --config webpack.config.js"
+    "start": "webpack --config webpack.config.js",
+    "watch": "webpack --watch"
   },
   "devDependencies": {
     "babel-cli": "^6.24.1",

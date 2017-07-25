@@ -1,6 +1,8 @@
 var path = require('path');
+const CleanWebpackPlugin = require('clean-webpack-plugin');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
+var CopyWebpackPlugin = require('copy-webpack-plugin');
 
 module.exports = {
   entry: './src/index.js',
@@ -22,10 +24,17 @@ module.exports = {
           //resolve-url-loader may be chained before sass-loader if necessary
           use: ['css-loader', 'sass-loader']
         })
+      },
+      {
+        test: /\.(png|svg|jpg|gif)$/,
+        use: [
+         'file-loader'
+        ]
       }
     ]
   },
   plugins: [
+    new CleanWebpackPlugin(['dist']),
     // https://github.com/ampedandwired/html-webpack-plugin
     new HtmlWebpackPlugin({
         filename: 'index.html',
@@ -33,5 +42,12 @@ module.exports = {
         inject: true
     }),
     new ExtractTextPlugin("css/main.css"),
+    new CopyWebpackPlugin([
+        // Copy directory contents to {output}/to/directory/
+        {
+          from: './src/assets/images', 
+          to: 'images' 
+        },
+    ])
   ]
 };
