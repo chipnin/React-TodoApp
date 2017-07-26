@@ -13,15 +13,7 @@ export default class Todo extends React.Component {
                 year: date.getFullYear(),
             },
 
-            listAction: {
-                edit: 'Edit', 
-                markDone: 'Mark Done', 
-                delete: 'Delete'
-            },
-
             listTasks: [],
-
-            newItem: '',
         };
 
         this.addTask = this.addTask.bind(this);
@@ -35,9 +27,10 @@ export default class Todo extends React.Component {
         let maxId = Math.max.apply(Math, listTasks.map((task) => task.id));
         maxId = Number.isFinite(maxId) ? maxId : 0;
         
-        listTasks.push({
+        listTasks.unshift({
             id: maxId + 1,
             content: '',
+            type: 'normal',
             status: 'editting',
         });
         
@@ -69,9 +62,20 @@ export default class Todo extends React.Component {
         });
     }
 
+    updateTaskType(task, type) {
+        let listTasks = this.state.listTasks;
+        let currentTask = listTasks.find((item) => item.id === task.id);
+        currentTask.type = type;
+
+        this.setState({
+            listTasks,
+        });
+    }
+
     deleteTask(task) {
         let listTasks = this.state.listTasks;
         let indexTask = listTasks.indexOf(task);
+        
         if (indexTask > -1) {
             listTasks.splice(indexTask, 1);
         }
@@ -104,7 +108,15 @@ export default class Todo extends React.Component {
                 </div>
                 <ul className="todo-list">
                     {this.state.listTasks.map((task, index) =>
-                        <li key={index} className="todo-item">
+                        <li key={index} className={'todo-item ' + (task.status === 'done' ? 'task-done' : '')}>
+                            <span className={'label ' + task.type} onClick={this.showActionPopup}>
+                                <ul className="action-popup">
+                                    <li className="important" onClick={() => this.updateTaskType(task, 'important')}>Important</li>
+                                    <li className="normal" onClick={() => this.updateTaskType(task, 'normal')}>Normal</li>
+                                    <li className="other" onClick={() => this.updateTaskType(task, 'other')}>Whatever</li>
+                                </ul>
+                            </span>
+
                             {task.status !== 'editting' ? (
                                 <p className="text">{task.content}</p>
                             ) : (
