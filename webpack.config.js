@@ -1,7 +1,7 @@
 var path = require('path');
-const CleanWebpackPlugin = require('clean-webpack-plugin');
+var CleanWebpackPlugin = require('clean-webpack-plugin');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
-const ExtractTextPlugin = require("extract-text-webpack-plugin");
+var ExtractTextPlugin = require("extract-text-webpack-plugin");
 var CopyWebpackPlugin = require('copy-webpack-plugin');
 
 module.exports = {
@@ -22,15 +22,9 @@ module.exports = {
         use: ExtractTextPlugin.extract({
           fallback: 'style-loader',
           //resolve-url-loader may be chained before sass-loader if necessary
-          use: ['css-loader', 'sass-loader']
+          use: ['css-loader?-url', 'sass-loader']
         })
       },
-      {
-        test: /\.(png|svg|jpg|gif)$/,
-        use: [
-         'file-loader'
-        ]
-      }
     ]
   },
   plugins: [
