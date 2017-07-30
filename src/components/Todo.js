@@ -1,4 +1,6 @@
 import React from 'react';
+import TodoHeader from './TodoHeader';
+import TodoItem from './TodoItem';
 
 export default class Todo extends React.Component {
     constructor(props) {
@@ -7,12 +9,6 @@ export default class Todo extends React.Component {
         let date = new Date();
         
         this.state = {
-            tdDate: {
-                day: date.getDate(),
-                month: date.getMonth() + 1,
-                year: date.getFullYear(),
-            },
-
             listTasks: [],
         };
 
@@ -85,64 +81,19 @@ export default class Todo extends React.Component {
         });
     }
 
-    showActionPopup(event) {
-        let target = event.currentTarget;
-        let popup = target.querySelector(".action-popup");
-        
-        if (popup.classList.contains("show")) {
-            popup.classList.remove("show");
-        } else {
-            popup.classList.add("show");
-        }
-    }
-
     render() {
         return (
             <div className="container">
-                <div className="todo-header">
-                    {this.state.tdDate.day}- {this.state.tdDate.month} - {this.state.tdDate.year}
-                </div>
-                <div className="todo-summary">
-                    <p>(0) done / (0) tasks</p>
-                    <button onClick={this.addTask}>Add Task</button>
-                </div>
+                <TodoHeader listTasks={this.state.listTasks} onAddTask={this.addTask} />
                 <ul className="todo-list">
                     {this.state.listTasks.map((task, index) =>
-                        <li key={index} className={'todo-item ' + (task.status === 'done' ? 'task-done' : '')}>
-                            <span className={'label ' + task.type} onClick={this.showActionPopup}>
-                                <ul className="action-popup">
-                                    <li className="important" onClick={() => this.updateTaskType(task, 'important')}>Important</li>
-                                    <li className="normal" onClick={() => this.updateTaskType(task, 'normal')}>Normal</li>
-                                    <li className="other" onClick={() => this.updateTaskType(task, 'other')}>Whatever</li>
-                                </ul>
-                            </span>
-
-                            {task.status !== 'editting' ? (
-                                <p className="text">{task.content}</p>
-                            ) : (
-                                <p className="text">
-                                    <input type="text" defaultValue={task.content} placeholder="Type a new task and hit enter" onKeyPress={(e) => this.updateTaskContent(e, task)} />
-                                </p>
-                            )}
-                            
-                            <div className="todo-action" onClick={this.showActionPopup}>
-                                 <span className="more">
-                                   <span></span><span></span><span></span>
-                                 </span>
-
-                                <ul className="action-popup">
-                                    {task.status !== 'done' ? (
-                                        <li onClick={() => this.updateTaskStatus(task, 'done')}>Mark done</li>
-                                    ) : (
-                                        <li onClick={() => this.updateTaskStatus(task, 'edited')}>Mark not done</li>
-                                    )}
-                                    {task.status !== 'editting' && task.status !== 'done' &&
-                                        <li onClick={() => this.updateTaskStatus(task, 'editting')}>Edit</li>
-                                    }
-                                    <li onClick={() => this.deleteTask(task)}>Delete</li>
-                                </ul>
-                            </div>
-                        </li>
+                        <TodoItem key={index} 
+                                  updateTaskType={this.updateTaskType} 
+                                  updateTaskStatus={this.updateTaskStatus} 
+                                  updateTaskContent={this.updateTaskContent} 
+                                  deleteTask={this.deleteTask} 
+                                  task={task} 
+                                  task={task} />
                     )}
                 </ul>
             </div>
