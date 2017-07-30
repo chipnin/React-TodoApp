@@ -2,6 +2,8 @@ import React from 'react';
 
 export default class TodoItem extends React.Component {
     showActionPopup(event) {
+        event.stopPropagation();
+        
         let target = event.currentTarget;
         let popup = target.querySelector(".action-popup");
         

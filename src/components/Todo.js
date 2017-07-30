@@ -15,6 +15,7 @@ export default class Todo extends React.Component {
         this.addTask = this.addTask.bind(this);
         this.updateTaskContent = this.updateTaskContent.bind(this);
         this.updateTaskStatus = this.updateTaskStatus.bind(this);
+        this.updateTaskType = this.updateTaskType.bind(this);
         this.deleteTask = this.deleteTask.bind(this);
     }
 
