@@ -36,17 +36,15 @@ export default class Todo extends React.Component {
         });
     }
 
-    updateTaskContent(event, task) {
-        if (event.key === 'Enter') {
-            let listTasks = this.state.listTasks;
-            let currentTask = listTasks.find((item) => item.id === task.id);
-            currentTask.content = event.target.value;
-            currentTask.status = 'edited';
+    updateTaskContent(taskContent, task) {
+        let listTasks = this.state.listTasks;
+        let currentTask = listTasks.find((item) => item.id === task.id);
+        currentTask.content = taskContent;
+        currentTask.status = 'edited';
 
-            this.setState({
-                listTasks,
-            });
-        }
+        this.setState({
+            listTasks,
+        });
     }
 
     updateTaskStatus(task, status) {
@@ -93,7 +91,6 @@ export default class Todo extends React.Component {
                                   updateTaskStatus={this.updateTaskStatus} 
                                   updateTaskContent={this.updateTaskContent} 
                                   deleteTask={this.deleteTask} 
-                                  task={task} 
                                   task={task} />
                     )}
                 </ul>

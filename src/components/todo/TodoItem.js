@@ -1,9 +1,13 @@
 import React from 'react';
+import TodoInput from './TodoInput';
 
 export default class TodoItem extends React.Component {
+    constructor(props) {
+        super(props);
+        this.handleKeyPress = this.handleKeyPress.bind(this);
+    }
+    
     showActionPopup(event) {
-        event.stopPropagation();
-        
         let target = event.currentTarget;
         let popup = target.querySelector(".action-popup");
         
@@ -11,6 +15,12 @@ export default class TodoItem extends React.Component {
             popup.classList.remove("show");
         } else {
             popup.classList.add("show");
+        }
+    }
+
+    handleKeyPress(event) {
+        if (event.key === 'Enter') {
+            this.props.updateTaskContent(event.target.value, this.props.task);
         }
     }
 
@@ -31,7 +41,9 @@ export default class TodoItem extends React.Component {
                     <p className="text">{task.content}</p>
                 ) : (
                     <p className="text">
-                        <input type="text" defaultValue={task.content} placeholder="Type a new task and hit enter" onKeyPress={(e) => this.props.updateTaskContent(e, task)} />
+                        <TodoInput value={task.content} 
+                            placeholder="Type a new task and hit enter" 
+                            onInputKeyPress={this.handleKeyPress} />
                     </p>
                 )}
                 
